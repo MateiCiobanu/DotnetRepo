@@ -1,0 +1,9 @@
+# Build
+bin/
+obj/
+
+# Rider / IntelliJ
+.idea/
+
+# macOS system files
+.DS_Store
