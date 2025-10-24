@@ -1,0 +1,63 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Rider / IntelliJ
+.idea/
+*.iml
+out/
+
+# VS / Build
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+[Bb]uild/
+[Ll]ogs/
+
+# User-specific
+*.user
+*.userosscache
+*.suo
+*.rsuser
+*.opendb
+*.VC.db
+*.vscode/
+
+# Nu băga settings locale
+*.DotSettings.user
+*.sln.docstates
+
+# Test results
+[TestResults]/
+*.coverage
+*.coveragexml
+
+# Nu versiona publish artifacts
+publish/
+*.nupkg
+*.snupkg
+
+# Nu versiona tool cache
+.vs/
+.nuget/packages/
+
+# ASP.NET dev certs
+*.pfx
+
+# Secret stuff
+secrets.json
+appsettings.*.local.json
+appsettings.Development.local.json
+
+# Docker
+**/.dockerignore
+**/docker-compose*.yaml
+**/Dockerfile.*.local
+
+# Others
+*.swp
+*.tmp
+*.log
