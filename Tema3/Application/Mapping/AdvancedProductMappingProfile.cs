@@ -13,10 +13,10 @@ public class AdvancedProductMappingProfile : Profile
     {
         // Request -> Entity
         CreateMap<CreateProductProfileRequest, Product>()
-            .ForMember(d => d.Id,         o => o.MapFrom(_ => Guid.NewGuid()))
-            .ForMember(d => d.CreatedAt,  o => o.MapFrom(_ => DateTime.UtcNow))
-            .ForMember(d => d.IsAvailable,o => o.MapFrom(s => s.StockQuantity > 0))
-            .ForMember(d => d.UpdatedAt,  o => o.Ignore());
+            .ForMember(d => d.Id, o => o.MapFrom(_ => Guid.NewGuid()))
+            .ForMember(d => d.CreatedAt, o => o.MapFrom(_ => DateTime.UtcNow))
+            .ForMember(d => d.IsAvailable, o => o.MapFrom(s => s.StockQuantity > 0))
+            .ForMember(d => d.UpdatedAt, o => o.Ignore());
 
         // Entity -> DTO
         CreateMap<Product, ProductProfileDto>()
@@ -29,8 +29,8 @@ public class AdvancedProductMappingProfile : Profile
             .ForMember(d => d.FormattedPrice, o => o.MapFrom<PriceFormatterResolver>())
             // Restul resolverelor din pasul anterior
             .ForMember(d => d.CategoryDisplayName, o => o.MapFrom<CategoryDisplayResolver>())
-            .ForMember(d => d.ProductAge,          o => o.MapFrom<ProductAgeResolver>())
-            .ForMember(d => d.BrandInitials,       o => o.MapFrom<BrandInitialsResolver>())
-            .ForMember(d => d.AvailabilityStatus,  o => o.MapFrom<AvailabilityStatusResolver>());
+            .ForMember(d => d.ProductAge, o => o.MapFrom<ProductAgeResolver>())
+            .ForMember(d => d.BrandInitials, o => o.MapFrom<BrandInitialsResolver>())
+            .ForMember(d => d.AvailabilityStatus, o => o.MapFrom<AvailabilityStatusResolver>());
     }
 }

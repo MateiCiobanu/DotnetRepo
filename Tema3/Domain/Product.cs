@@ -6,7 +6,7 @@ public class Product
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; } 
+    public DateTime? UpdatedAt { get; set; }
     public string Name { get; set; } = default!;
     public string Brand { get; set; } = default!;
     public string SKU { get; set; } = default!;

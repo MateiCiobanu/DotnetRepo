@@ -9,8 +9,8 @@ public class ProductCategoryAttribute : ValidationAttribute
 
     public ProductCategoryAttribute(params ProductCategory[] allowed)
     {
-        _allowed = allowed is { Length: > 0 } 
-            ? new HashSet<ProductCategory>(allowed) 
+        _allowed = allowed is { Length: > 0 }
+            ? new HashSet<ProductCategory>(allowed)
             : new HashSet<ProductCategory>((ProductCategory[])Enum.GetValues(typeof(ProductCategory)));
 
         ErrorMessage = $"Category must be one of: {string.Join(", ", _allowed)}.";

@@ -12,10 +12,10 @@ public class CategoryDisplayResolver : IValueResolver<Product, ProductProfileDto
         return source.Category switch
         {
             ProductCategory.Electronics => "Electronics & Technology",
-            ProductCategory.Clothing    => "Clothing & Fashion",
-            ProductCategory.Books       => "Books & Media",
-            ProductCategory.Home        => "Home & Garden",
-            _                           => "Uncategorized"
+            ProductCategory.Clothing => "Clothing & Fashion",
+            ProductCategory.Books => "Books & Media",
+            ProductCategory.Home => "Home & Garden",
+            _ => "Uncategorized"
         };
     }
 }

@@ -13,7 +13,7 @@ public class ProductAgeResolver : IValueResolver<Product, ProductProfileDto, str
 
         var days = (now - source.ReleaseDate).Days;
 
-        if (days < 30)  return "New Release";
+        if (days < 30) return "New Release";
         if (days < 365) return $"{days / 30} months old";
         if (days < 1825) return $"{days / 365} years old";
         if (days == 1825) return "Classic";

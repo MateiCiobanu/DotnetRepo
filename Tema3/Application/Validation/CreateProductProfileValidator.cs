@@ -9,8 +9,7 @@ public class CreateProductProfileValidator
 {
     private readonly ApplicationContext _ctx;
     private readonly ILogger<CreateProductProfileValidator> _logger;
-
-    // liste existente
+    
     private static readonly string[] InappropriateWords =
         { "offensive", "nsfw", "obscene", "vulgar" };
 
@@ -25,8 +24,7 @@ public class CreateProductProfileValidator
 
     private static readonly Regex SkuRegex =
         new(@"^[A-Za-z0-9\-]{5,20}$", RegexOptions.Compiled);
-
-    // noi: cuvinte pentru produse tech
+    
     private static readonly string[] TechKeywords =
     {
         "tech","smart","ai","ml","gpu","cpu","processor","chip","ssd","nvme",
@@ -35,7 +33,6 @@ public class CreateProductProfileValidator
         "gaming","controller","console","keyboard","mouse","battery","charger","dock"
     };
 
-    // noi: filtre extra pentru Home
     private static readonly string[] HomeInappropriateWordsExtra =
         { "violence","adult","nsfw" };
 
@@ -49,26 +46,29 @@ public class CreateProductProfileValidator
     public async Task ValidateAndThrowAsync(CreateProductProfileRequest r, CancellationToken ct)
     {
         var errors = new List<string>();
-
-        // Name
+    
         if (string.IsNullOrWhiteSpace(r.Name))
             errors.Add("Name is required.");
-        if (r.Name?.Length < 1 || r.Name?.Length > 200)
-            errors.Add("Name length must be 1..200.");
-        if (!BeValidName(r.Name))
-            errors.Add("Name contains inappropriate content.");
-        if (!await BeUniqueName(r.Name, r.Brand, ct))
-            errors.Add("Name must be unique per brand.");
+        else
+        {
+            if (r.Name.Length < 1 || r.Name.Length > 200)
+                errors.Add("Name length must be 1..200.");
+            if (!BeValidName(r.Name))
+                errors.Add("Name contains inappropriate content.");
+            if (!await BeUniqueName(r.Name, r.Brand ?? string.Empty, ct))
+                errors.Add("Name must be unique per brand.");
+        }
 
-        // Brand
         if (string.IsNullOrWhiteSpace(r.Brand))
             errors.Add("Brand is required.");
-        if (r.Brand?.Length < 2 || r.Brand?.Length > 100)
-            errors.Add("Brand length must be 2..100.");
-        if (!BeValidBrandName(r.Brand))
-            errors.Add("Brand contains invalid characters.");
+        else
+        {
+            if (r.Brand.Length < 2 || r.Brand.Length > 100)
+                errors.Add("Brand length must be 2..100.");
+            if (!BeValidBrandName(r.Brand))
+                errors.Add("Brand contains invalid characters.");
+        }
 
-        // SKU
         if (string.IsNullOrWhiteSpace(r.SKU))
             errors.Add("SKU is required.");
         if (!BeValidSKU(r.SKU))
@@ -76,33 +76,27 @@ public class CreateProductProfileValidator
         if (!await BeUniqueSKU(r.SKU, ct))
             errors.Add("SKU must be unique.");
 
-        // Category
         if (!Enum.IsDefined(typeof(ProductCategory), r.Category))
             errors.Add("Category is invalid.");
 
-        // Price
         if (r.Price <= 0)
             errors.Add("Price must be greater than 0.");
         if (r.Price >= 10000)
             errors.Add("Price must be less than 10000.");
 
-        // ReleaseDate
         if (r.ReleaseDate > DateTime.UtcNow)
             errors.Add("ReleaseDate cannot be in the future.");
         if (r.ReleaseDate < new DateTime(1900, 1, 1))
             errors.Add("ReleaseDate cannot be before 1900.");
 
-        // StockQuantity
         if (r.StockQuantity < 0)
             errors.Add("StockQuantity cannot be negative.");
         if (r.StockQuantity > 100000)
             errors.Add("StockQuantity cannot exceed 100000.");
 
-        // ImageUrl
         if (!BeValidImageUrl(r.ImageUrl))
             errors.Add("ImageUrl must be HTTP/HTTPS and end with a valid image extension.");
 
-        // === CONDITIONAL VALIDATION (Task 3.3) ===
         switch (r.Category)
         {
             case ProductCategory.Electronics:
@@ -127,15 +121,11 @@ public class CreateProductProfileValidator
                 break;
         }
 
-        // Cross-field
         if (r.Price > 100m && r.StockQuantity > 20)
             errors.Add("Expensive products (> $100) must have limited stock (≤ 20 units).");
 
         if (r.Category == ProductCategory.Electronics && !ReleasedWithinLastYears(r.ReleaseDate, 5))
             errors.Add("Electronics must be recent (released within 5 years).");
-        // === end conditional ===
-
-        // Business Rules
         var business = await PassBusinessRules(r, ct);
         errors.AddRange(business);
 
@@ -145,8 +135,6 @@ public class CreateProductProfileValidator
             throw new ArgumentException(string.Join(" | ", errors));
         }
     }
-
-    // Methods required
 
     public bool BeValidName(string? name)
     {
@@ -175,7 +163,7 @@ public class CreateProductProfileValidator
 
     public bool BeValidImageUrl(string? url)
     {
-        if (string.IsNullOrWhiteSpace(url)) return true; // opțional
+        if (string.IsNullOrWhiteSpace(url)) return true;
         if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) return false;
         if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps) return false;
         var ext = Path.GetExtension(uri.LocalPath);
@@ -186,7 +174,6 @@ public class CreateProductProfileValidator
     {
         var errors = new List<string>();
 
-        // Rule 1: daily cap
         var todayCount = await _ctx.CountCreatedTodayAsync(ct);
         if (todayCount >= 500)
         {
@@ -194,14 +181,12 @@ public class CreateProductProfileValidator
             errors.Add("Daily product addition limit reached (500).");
         }
 
-        // Rule 2: electronics minimum price
         if (r.Category == ProductCategory.Electronics && r.Price < 50m)
         {
             _logger.LogWarning("Electronics min price violated. Price={Price}", r.Price);
             errors.Add("Electronics must be priced at least $50.00.");
         }
 
-        // Rule 3: Home restricted words in Name
         if (r.Category == ProductCategory.Home)
         {
             var n = r.Name?.ToLowerInvariant() ?? "";
@@ -212,7 +197,6 @@ public class CreateProductProfileValidator
             }
         }
 
-        // Rule 4: high-value stock cap
         if (r.Price > 500m && r.StockQuantity > 10)
         {
             _logger.LogWarning("High value stock limit violated. Price={Price} Stock={Stock}", r.Price, r.StockQuantity);
@@ -222,7 +206,6 @@ public class CreateProductProfileValidator
         return errors;
     }
 
-    // helpers noi
 
     private static bool ContainTechnologyKeywords(string? name)
     {

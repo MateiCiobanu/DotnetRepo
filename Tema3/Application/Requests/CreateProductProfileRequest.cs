@@ -17,7 +17,7 @@ public class CreateProductProfileRequest
     public string Brand { get; set; } = default!;
 
     [Required(ErrorMessage = "SKU is required.")]
-    [ValidSKU] 
+    [ValidSKU]
     public string SKU { get; set; } = default!;
 
     [ProductCategory(ProductCategory.Electronics, ProductCategory.Clothing, ProductCategory.Books, ProductCategory.Home)]
