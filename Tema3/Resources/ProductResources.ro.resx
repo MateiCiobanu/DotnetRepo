@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+  
+  <!-- Category Displays (Romanian) -->
+  <data name="Category_Electronics" xml:space="preserve">
+    <value>Electronică și Tehnologie</value>
+  </data>
+  <data name="Category_Clothing" xml:space="preserve">
+    <value>Îmbrăcăminte și Modă</value>
+  </data>
+  <data name="Category_Books" xml:space="preserve">
+    <value>Cărți și Media</value>
+  </data>
+  <data name="Category_Home" xml:space="preserve">
+    <value>Casă și Grădină</value>
+  </data>
+  <data name="Category_Uncategorized" xml:space="preserve">
+    <value>Necategorizat</value>
+  </data>
+  
+  <!-- Status Messages -->
+  <data name="Status_OutOfStock" xml:space="preserve">
+    <value>Stoc Epuizat</value>
+  </data>
+  <data name="Status_Unavailable" xml:space="preserve">
+    <value>Indisponibil</value>
+  </data>
+  <data name="Status_LastItem" xml:space="preserve">
+    <value>Ultimul Produs</value>
+  </data>
+  <data name="Status_LimitedStock" xml:space="preserve">
+    <value>Stoc Limitat</value>
+  </data>
+  <data name="Status_InStock" xml:space="preserve">
+    <value>În Stoc</value>
+  </data>
+  
+  <!-- Product Age -->
+  <data name="Age_NewRelease" xml:space="preserve">
+    <value>Lansare Nouă</value>
+  </data>
+  <data name="Age_MonthsOld" xml:space="preserve">
+    <value>{0} luni vechime</value>
+  </data>
+  <data name="Age_YearsOld" xml:space="preserve">
+    <value>{0} ani vechime</value>
+  </data>
+  <data name="Age_Classic" xml:space="preserve">
+    <value>Clasic</value>
+  </data>
+</root>
+
