@@ -1,0 +1,23 @@
+# Build results
+bin/
+obj/
+
+# Rider / IntelliJ
+.idea/
+*.iml
+out/
+
+# Test results
+[TestResults]/
+*.coverage
+*.coveragexml
+TestResults/
+
+# User-specific
+*.user
+*.DotSettings.user
+
+# OS
+.DS_Store
+Thumbs.db
+
